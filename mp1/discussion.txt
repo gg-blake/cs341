@@ -1,0 +1,84 @@
+1. 
+I began testing and debugging my code on the UMB CS Unix Server. The bulk of the code 
+writing took place on the ‘cmds.c’ file. When I needed to debug my code to ensure I 
+could access the intended memory, I used functions like printf() and sscanf(). I 
+noticed when testing my code that the Unix server had more of its memory filled with 
+non-zero values. This was in contrast to the memory of the SAPC VM, in which I found 
+on many occasions, 16 hex-pair rows that were empty; the row had all zeroes. I assume 
+that this is because more processes are being run on the Unix Server which is designed 
+to be used by many people, versus the SAPC VM which is intended for individual use. 
+Accessing memory that is out of bounds, will result in an error and program halt on 
+both the Unix and SAPC machines. For the Unix machine, it says, 
+“Segmentation fault (core dumped)”. For the SAPC machine, it says, 
+“Exception 14 at EIP=...: Page fault”. As for writing to memory, when working on the 
+Unix machine, it would only let you successfully write to memory locations of 
+variables that were declared in the program itself. For any other memory locations, 
+I would receive a segmentation error. However, on the SAPC machine, writing memory to 
+locations was less strict, and I was able to write to any byte of memory that was 
+empty and variables that were declared in the code.
+
+2. 
+A. The address of global variable xyz is 0x804c040 and the address of the pxyz 
+global variable is 0x804c090. Since pxyz is a pointer and was initialized to the 
+address of xyz, its value is also 0x804c040. 
+B. The address of the cmds global array 
+is 0x804c060. This is also the address of the first item in the array. 
+C. For the locations of the string pointer, ‘m’ is located at 0x804a042, ‘d’ is 
+located at 0x804a043, and the terminating null is located at 0x804a044. 
+D. You cannot change tutor prompts by writing directly to memory. This is because 
+when I tried to change the tutor command from ‘s’ to ‘x’, I received a segmentation 
+error. This usually happens when the system protects memory from being overwritten 
+that is in use.
+
+3.
+After analyzing the output of ‘nm tutor.o’ on the Unix machine, I have concluded that 
+data resides on memory location ranges of 0x001025c0 to 0x00102721. As for code on 
+the Unix machine, it resides on a memory location range of 0x00000000 to 0x00101669. 
+After analyzing the output of ‘nm tutor.lnx’ on the SAPC machine, I have concluded 
+that the code resides in the memory location range 0x00100100 to 0x00100f71. As for 
+data locations, it resides in the memory address range 0x001025c0 to 0x00102721.
+
+4.
+To crash the program, I initialized a variable to the value of 1 divided by 0. When 
+I ran the code on the Unix machine, the output returned the error message, 
+“Floating point exception (core dumped)” and then ended the program. When I ran the 
+program on the SAPC machine, the program output nothing and instantly went back to 
+the tutor program.
+
+5.
+While on the Unix machine, after setting the breakpoint at the 
+mem_display function, I used gdb to get the location of the stack pointer during the 
+function call. The location of the register pointer changes as I continue to run the 
+mem_display function but I have noticed that it follows the particular address 
+pattern of 0xffff####. I have also observed on the Unix machine that the initial 
+location of the %esp stack pointer is 0xffffdbcc. I then went to observe the register 
+pointer on the SAPC machine. When using the ‘rd’ command, I wasn’t able to make 
+breakpoints like in Unix but I did notice that unlike in Unix, once the custom tutor 
+program ended, I was able to locate the stack pointer at 0x003ffff0. I also noticed 
+that this was not the same as the location that I read before running the PC-Tutor 
+program. So the main difference I have concluded is that on the Unix machine, the 
+stack point is set to a default value whenever the program stops while the SAPC does 
+not reset the stack pointer value.
+
+6.
+Since learning to use GDB to make breakpoints and check information on registers, I 
+started taking the addresses that %esp and %ebp contained and fed it back into my 
+tutor program. The results were confusing but I began to understand the pattern of 
+how %esp changes whenever a new function is being called. This process of inputting 
+the addresses into the tutor did take quite some time but it was definitely a great 
+learning experience as I think I understand now how each register serves a specific 
+purpose and more specifically, how the stack pointer and base pointer keep track of 
+the functions called. The hardest part of this project overall was learning how to 
+access the addresses of the object ‘Cmd’ and using C to find the address. Once I 
+found the correct address, it was easy to complete section 2 of the discussion. 
+Making the program initially was not the hardest part in my opinion because the 
+functions that were required were very fundamental, despite how powerful they turned 
+out to be. The most satisfying part was when I was able to change the command token 
+through Tutor because it really ‘connected the dots’ for me and understanding how C 
+programs operate. One setback I had related to my unfamiliarity with C was the pointer 
+manipulation in my code. It took me a long time to read the 16 bytes of data from 
+memory and print it to the output. One thing I think might improve the assignment is 
+making access to all the resources needed for the project more streamlined and having 
+guides consolidated into one place. Personally, it took me a lot of time to 
+understand where each guide for setting up the environment to using gdb to setting up 
+the SAPC.

@@ -1,0 +1,491 @@
+Script started on 2024-02-21 23:29:17-05:00 [TERM="xterm-256color" TTY="/dev/pts/38" COLUMNS="120" LINES="30"]
+bmoody25@pe15:~/cs341/mp1$ [Kbmoody25@pe15:~/cs341/mp1$ ls -l[Kal
+total 196
+drwxr-sr-x 2 bmoody25 cs341-1G  4096 Feb 21 23:29 .
+drwxrws--- 4 bmoody25 cs341-1G  4096 Feb  8 18:23 ..
+-rw-r--r-- 1 bmoody25 cs341-1G  4611 Feb 21 23:02 cmds.c
+-rw-r--r-- 1 bmoody25 cs341-1G  2640 Feb 17 19:02 cmds.c.save
+-rw-r--r-- 1 bmoody25 cs341-1G  4757 Feb 21 23:15 cmds.c.save.1
+-rw-r--r-- 1 bmoody25 cs341-1G  9620 Feb 21 23:26 cmds.o
+-rw-r--r-- 1 bmoody25 cs341-1G  8140 Feb 21 23:26 cmds_u.o
+-rw-r--r-- 1 bmoody25 cs341-1G  5773 Feb 21 22:24 discussion.txt
+-rw-r--r-- 1 bmoody25 cs341-1G  3045 Feb  8 18:23 makefile
+-rw-r--r-- 1 bmoody25 cs341-1G  2412 Feb  8 18:23 slex.c
+-rw-r--r-- 1 bmoody25 cs341-1G  1846 Feb  8 18:23 slex.h
+-rw-r--r-- 1 bmoody25 cs341-1G  7404 Feb 21 23:26 slex.o
+-rw-r--r-- 1 bmoody25 cs341-1G  5996 Feb 21 23:26 slex_u.o
+-rw-r--r-- 1 bmoody25 cs341-1G   556 Feb 21 23:26 stubstart.o
+-rw-r--r-- 1 bmoody25 cs341-1G    97 Feb  8 18:23 stubstart.s
+-rw-r--r-- 1 bmoody25 cs341-1G  1228 Feb 21 23:26 syms
+-rw-r--r-- 1 bmoody25 cs341-1G 12288 Feb  8 18:23 .syms.swp
+-rwxr-xr-x 1 bmoody25 cs341-1G 22020 Feb 21 23:26 tutor
+-rw-r--r-- 1 bmoody25 cs341-1G  2342 Feb 17 22:56 tutor.c
+-rwxr-xr-x 1 bmoody25 cs341-1G 40892 Feb 21 23:26 tutor.lnx
+-rw-r--r-- 1 bmoody25 cs341-1G  7512 Feb 21 23:26 tutor.o
+-rw-r--r-- 1 bmoody25 cs341-1G  6036 Feb 21 23:26 tutor_u.o
+-rw-r--r-- 1 bmoody25 cs341-1G     0 Feb 21 23:29 typescript
+-rw-r--r-- 1 bmoody25 cs341-1G   638 Feb 21 23:26 usyms
+bmoody25@pe15:~/cs341/mp1$ cat discussion.txt
+1. 
+I began testing and debugging my code on the UMB CS Unix Server. The bulk of the code 
+writing took place on the ‘cmds.c’ file. When I needed to debug my code to ensure I 
+could access the intended memory, I used functions like printf() and sscanf(). I 
+noticed when testing my code that the Unix server had more of its memory filled with 
+non-zero values. This was in contrast to the memory of the SAPC VM, in which I found 
+on many occasions, 16 hex-pair rows that were empty; the row had all zeroes. I assume 
+that this is because more processes are being run on the Unix Server which is designed 
+to be used by many people, versus the SAPC VM which is intended for individual use. 
+Accessing memory that is out of bounds, will result in an error and program halt on 
+both the Unix and SAPC machines. For the Unix machine, it says, 
+“Segmentation fault (core dumped)”. For the SAPC machine, it says, 
+“Exception 14 at EIP=...: Page fault”. As for writing to memory, when working on the 
+Unix machine, it would only let you successfully write to memory locations of 
+variables that were declared in the program itself. For any other memory locations, 
+I would receive a segmentation error. However, on the SAPC machine, writing memory to 
+locations was less strict, and I was able to write to any byte of memory that was 
+empty and variables that were declared in the code.
+
+2. 
+A. The address of global variable xyz is 0x804c040 and the address of the pxyz 
+global variable is 0x804c090. Since pxyz is a pointer and was initialized to the 
+address of xyz, its value is also 0x804c040. 
+B. The address of the cmds global array 
+is 0x804c060. This is also the address of the first item in the array. 
+C. For the locations of the string pointer, ‘m’ is located at 0x804a042, ‘d’ is 
+located at 0x804a043, and the terminating null is located at 0x804a044. 
+D. You cannot change tutor prompts by writing directly to memory. This is because 
+when I tried to change the tutor command from ‘s’ to ‘x’, I received a segmentation 
+error. This usually happens when the system protects memory from being overwritten 
+that is in use.
+
+3.
+After analyzing the output of ‘nm tutor.o’ on the Unix machine, I have concluded that 
+data resides on memory location ranges of 0x001025c0 to 0x00102721. As for code on 
+the Unix machine, it resides on a memory location range of 0x00000000 to 0x00101669. 
+After analyzing the output of ‘nm tutor.lnx’ on the SAPC machine, I have concluded 
+that the code resides in the memory location range 0x00100100 to 0x00100f71. As for 
+data locations, it resides in the memory address range 0x001025c0 to 0x00102721.
+
+4.
+To crash the program, I initialized a variable to the value of 1 divided by 0. When 
+I ran the code on the Unix machine, the output returned the error message, 
+“Floating point exception (core dumped)” and then ended the program. When I ran the 
+program on the SAPC machine, the program output nothing and instantly went back to 
+the tutor program.
+
+5.
+While on the Unix machine, after setting the breakpoint at the 
+mem_display function, I used gdb to get the location of the stack pointer during the 
+function call. The location of the register pointer changes as I continue to run the 
+mem_display function but I have noticed that it follows the particular address 
+pattern of 0xffff####. I have also observed on the Unix machine that the initial 
+location of the %esp stack pointer is 0xffffdbcc. I then went to observe the register 
+pointer on the SAPC machine. When using the ‘rd’ command, I wasn’t able to make 
+breakpoints like in Unix but I did notice that unlike in Unix, once the custom tutor 
+program ended, I was able to locate the stack pointer at 0x003ffff0. I also noticed 
+that this was not the same as the location that I read before running the PC-Tutor 
+program. So the main difference I have concluded is that on the Unix machine, the 
+stack point is set to a default value whenever the program stops while the SAPC does 
+not reset the stack pointer value.
+
+6.
+Since learning to use GDB to make breakpoints and check information on registers, I 
+started taking the addresses that %esp and %ebp contained and fed it back into my 
+tutor program. The results were confusing but I began to understand the pattern of 
+how %esp changes whenever a new function is being called. This process of inputting 
+the addresses into the tutor did take quite some time but it was definitely a great 
+learning experience as I think I understand now how each register serves a specific 
+purpose and more specifically, how the stack pointer and base pointer keep track of 
+the functions called. The hardest part of this project overall was learning how to 
+access the addresses of the object ‘Cmd’ and using C to find the address. Once I 
+found the correct address, it was easy to complete section 2 of the discussion. 
+Making the program initially was not the hardest part in my opinion because the 
+functions that were required were very fundamental, despite how powerful they turned 
+out to be. The most satisfying part was when I was able to change the command token 
+through Tutor because it really ‘connected the dots’ for me and understanding how C 
+programs operate. One setback I had related to my unfamiliarity with C was the pointer 
+manipulation in my code. It took me a long time to read the 16 bytes of data from 
+memory and print it to the output. One thing I think might improve the assignment is 
+making access to all the resources needed for the project more streamlined and having 
+guides consolidated into one place. Personally, it took me a lot of time to 
+understand where each guide for setting up the environment to using gdb to setting up 
+the SAPC.
+bmoody25@pe15:~/cs341/mp1$ cat tutor.c
+/******************************************************************
+*
+*   file:     tutor.c
+*   author:   eb
+*   date:     September, 1990
+*
+*   Driver for a "tutor" program to mimic and extend the MECB ROM TUTOR.
+* 
+*   built from betty o'neil's previous version
+*
+*   revisions:
+*   Jan '96: changed prompt to PC-tutor, now mimics floppy-based Tutor
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "slex.h" 
+/* The preprocessor symbol SAPC is #defined in $pcinc/stdio.h.  This
+ * stdio.h is found by i386-gcc because of the -I flag in its compile command
+ * in the Makefile.  In the UNIX case, there is no such redirection,
+ * so the ordinary stdio.h is used, and it has no SAPC definition.
+ */
+#ifdef SAPC
+#define PROMPT "PC-tutor> "
+#else
+#define PROMPT "UNIX-tutor> "
+#endif
+int main(void);
+void getcmd(char *, int *, int *);
+
+int main()
+{
+  int done = 0;
+  int cnum,linepos;
+  char linebuf[LINELEN];
+  Cmd *cp;
+
+  printf("     cmd    help message\n");
+  for(cp = cmds; cp->cmdtoken; cp++) 
+      printf("%8s    %s\n", cp->cmdtoken, cp->help);
+
+  while (!done) {
+    /* get cmd token from user by parsing first part of line in linebuf-- */
+    getcmd(linebuf,&cnum,&linepos);
+    /* call implementation routine for matched cmd-- */
+    /* (remaining part of line to parse starts at linebuf+linepos) */
+    done = cmds[cnum].cmdfn(&cmds[cnum], linebuf+linepos); 
+  }
+  return 0;
+}
+
+/***********************************************************************
+*
+*  getcmd 
+*
+* Better than scanf--read whole line in, parse resulting string.
+* Uses slex package to match cmd token in first part of linebuf 
+* and return command # and where to continue parsing.
+* Getcmd loops until user provides proper command, so no error return.
+*/
+void getcmd(char *linebuf, 
+             int *cnum_ptr,   /* returned command number */
+             int *pos_ptr     /* position in linebuf (after cmd token) */
+           )
+{
+  int done = 0;
+
+  while (!done) {
+     printf( PROMPT );
+     gets(linebuf);		/* read line from user, null terminate */
+     /* match cmd token to get cnum--call slex package to do lookup-- */
+     if (slex( linebuf, cmds, cnum_ptr, pos_ptr)==0) 
+         done = 1;	/* success in matching cmd */
+     else
+         printf(" No such command\n");
+  }
+}
+bmoody25@pe15:~/cs341/mp1$ cat slex.c
+/******************************************************************
+*
+*   file:   slex.c
+*   author: betty o'neil
+*   date:   ?
+*
+*   simple lexical analyzer, front part of a parser                   
+*   --compare to UNIX tool "lex", general lexical analyzer            
+*   gets a (space-delimited) token from linebuf and tries to match    
+*   it to one of the cmdtokens in the provided cmdtable             
+*
+*   accepts:       
+*         linebuf--string to get token from                         
+*         cmdtable--cmdtable to use                                 
+*   returns:                                                          
+*         *cnum_ptr--command # (offset in cmdtable) or -1 if no match
+*         *pos_ptr--new place in linebuf after token match          
+*
+*   improvements needed:
+*         make token matching case independent
+*         skip whitespace, not just blanks
+*
+*   revisions: 
+*     9/90 cleanup, convert function headers to ansi form
+*
+*/
+
+#include <stdio.h>
+//#include <string.h>
+#include "slex.h"		/* for definition of type cmd */
+//#include slex.h
+
+int slex(char *linebuf,    /* string from user */
+         Cmd cmdtable[],   /* cmd table to use */
+         int *cnum_ptr,    /* returned command number */
+         int *pos_ptr)      /* returned new place in linebuf */
+{
+  int i = 0;
+  char token[MAXTOKENLEN];
+  int newpos;
+
+  if (gettoken(linebuf,token,&newpos)<0) /* get token from linebuf */
+    return -1;			/* couldn't find token */
+
+  while ((cmdtable[i].cmdtoken != NULL)) {
+    if (strcmp(cmdtable[i].cmdtoken,token)==0) {
+	*cnum_ptr = i;		/* success--return command # */
+	*pos_ptr = newpos;	/* and where we got to in linebuf */
+	return 0;
+    }
+    else
+      i++;			/* keep scanning table */
+  }
+  return -1;			/* no match */
+}
+
+/******************************************************************
+ * get one space-delimited token from string in linebuf, also return 
+ * new position in string 
+ */
+int gettoken(char *linebuf, char *token, int *pos_ptr)
+{
+  int i = 0;
+  int j = 0;
+
+  while (linebuf[i] == ' ')
+    i++;			/* skip blanks */
+  while (linebuf[i] != ' '&&linebuf[i]!='\0')
+    token[j++] = linebuf[i++];	/* copy chars to token */
+  if (j==0)
+    return -1;			/* nothing there */
+  else
+    {
+      token[j] = '\0';		/* null-terminate token */
+      *pos_ptr = i;		/* return place in linebuf we got to */
+      return 0;			/* success */
+    }
+}
+bmoody25@pe15:~/cs341/mp1$ cat cmds.c
+
+
+/******************************************************************
+*
+*   file:     cmds.c
+*   author:   betty o'neil
+*   date:     ?
+*
+*   semantic actions for commands called by tutor (cs341, mp1)
+*
+*   revisions:
+*      9/90  eb   cleanup, convert function declarations to ansi
+*      9/91  eb   changes so that this can be used for hw1
+*      9/02  re   minor changes to quit command
+*/
+/* the Makefile arranges that #include <..> searches in the right
+   places for these headers-- 200920*/
+
+#include <stdio.h>
+#include "slex.h"
+/*===================================================================*
+*
+*   Command table for tutor program -- an array of structures of type
+*   cmd -- for each command provide the token, the function to call when
+*   that token is found, and the help message.
+*
+*   slex.h contains the typdef for struct cmd, and declares the
+*   cmds array as extern to all the other parts of the program.
+*   Code in slex.c parses user input command line and calls the
+*   requested semantic action, passing a pointer to the cmd struct
+*   and any arguments the user may have entered.
+*
+*===================================================================*/
+
+PROTOTYPE int stop(Cmd *cp, char *arguments);
+PROTOTYPE int mem_display(Cmd *cp, char *arguments);
+PROTOTYPE int mem_set(Cmd *cp, char *arguments);
+PROTOTYPE int help(Cmd *cp, char *arguments);
+
+/* command table */
+
+Cmd cmds[] = {{"md",  mem_display, "Memory display: MD <addr>"},
+              {"s",   stop,        "Stop" },
+              {"ms",  mem_set, "Memory set: MS <addr> <value>"},
+              {"h",   help,        "Help: H <command>"},
+              {NULL,  NULL,        NULL}};  /* null cmd to flag end of table */
+
+char xyz = 6;  /* test global variable  */
+char *pxyz = &xyz;  /* test pointer to xyz */
+/*===================================================================*
+*		command			routines
+*
+*   Each command routine is called with 2 args, the remaining
+*   part of the line to parse and a pointer to the struct cmd for this
+*   command. Each returns 0 for continue or 1 for all-done.
+*
+*===================================================================*/
+
+int stop(Cmd *cp, char *arguments)
+{
+  return 1;			/* all done flag */
+}
+
+/*===================================================================*
+*
+*   mem_display: display contents of 16 bytes in hex
+*
+*/
+
+
+int mem_display(Cmd *cp, char *arguments) {
+  unsigned int addr; // Initialize address input
+  int result = sscanf(arguments, "%x", &addr); 
+  
+  // Return if user input is invalid
+  if (result != 1) {
+    printf("Invalid Address!");
+    return 0;
+  }
+  
+  printf("%08x ", addr); // Print the input hex address with zeroes as padding
+  for (int i = 0; i < 16; i++) {
+    // Print each byte, incrementing by one
+    printf("%02x ", *((unsigned char*)(addr + i)));
+  }
+  
+  printf(" ");
+  
+  /* Convert the 16 bytes into ascii characters and omit the out of range hex values
+     as '.' */
+  for (int i = 0; i < 16; i++) {
+    unsigned char value = *((unsigned char*)(addr + i));
+
+    printf("%c", (value >= 32 && value < 127) ? value : '.');
+  }
+  
+
+  printf("\n");
+  return 0;
+}
+
+int mem_set(Cmd *cp, char *arguments)
+{
+  // Initialize variables for user input
+  unsigned int addr;
+  unsigned int val;
+  // Scan user input
+  int result = sscanf(arguments, "%x %x", &addr, &val);  
+  // Return if user input is invalid
+  if (result != 2) {
+    printf("Invalid Arguments!");
+    return 0;
+  }
+  
+  // Set the value at the inputted address to the address provided by user
+  *((unsigned char*)(addr)) = (unsigned char)val;
+
+  return 0;
+}
+
+
+
+int help(Cmd *cp, char *arguments) {
+  char string[MAXTOKENLEN]; // Adjusted size to MAXTOKENLEN
+  int num = 0;
+  int length = sizeof(cmds) / sizeof(Cmd);
+
+  // If the arguments are blank, print all commands and descriptions
+  if (sscanf(arguments, "%s", string) != 1)
+  {
+    for (num = 0; num < length - 1; num++)
+    {
+      printf(" %s   %s\n", cmds[num].cmdtoken, cmds[num].help);
+    }
+    return 0;
+  }
+
+  // Print specific command and it's corresponding description
+  for (num = 0; num < length - 1; num++)
+  {
+    if ((strcmp(cmds[num].cmdtoken, string)) == 0)
+    {
+      printf(" %s   %s\n", cmds[num].cmdtoken, cmds[num].help);
+      return 0; // Return success
+    }
+  }
+
+  // If the loop completes without finding a matching command
+  printf("Command not found: %s\n", string);
+  return -1; // Return an error code to indicate the issue
+}
+bmoody25@pe15:~/cs341/mp1$ make clean
+rm -f *.o *.lnx tutor core
+bmoody25@pe15:~/cs341/mp1$ make
+gcc -DSAPC -gdwarf-2 -gstrict-dwarf -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -I/home/cheungr/serl/tutor-linux/include  -c -o tutor.o tutor.c
+gcc -DSAPC -gdwarf-2 -gstrict-dwarf -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -I/home/cheungr/serl/tutor-linux/include  -c -o slex.o slex.c
+gcc -DSAPC -gdwarf-2 -gstrict-dwarf -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -I/home/cheungr/serl/tutor-linux/include  -c -o cmds.o cmds.c
+ld -m elf_i386 -N -Ttext 100100 -o tutor.lnx \
+/home/cheungr/serl/tutor-linux/libc/startup0.o /home/cheungr/serl/tutor-linux/libc/startup.o \
+tutor.o slex.o cmds.o /home/cheungr/serl/tutor-linux/libc/libc.a
+rm -f syms;nm -n tutor.lnx>syms
+bmoody25@pe15:~/cs341/mp1$ make tutor
+gcc -m32 -Wall -Wno-implicit -Wshadow -g -c -o tutor_u.o tutor.c
+gcc -m32 -Wall -Wno-implicit -Wshadow -g -c -o slex_u.o slex.c
+gcc -m32 -Wall -Wno-implicit -Wshadow -g -c -o cmds_u.o cmds.c
+as --32 -o stubstart.o  stubstart.s
+ld -m elf_i386 -o tutor tutor_u.o slex_u.o cmds_u.o stubstart.o -dynamic-linker /lib/ld-linux.so.2 -lc
+ld: tutor_u.o: in function `getcmd':
+/home/bmoody25/cs341/mp1/tutor.c:70: warning: the `gets' function is dangerous and should not be used.
+rm -f usyms; nm -vpt x tutor > usyms
+bmoody25@pe15:~/cs341/mp1$ nm tutor
+0804c0a0 D __bss_start
+0804c060 D cmds
+0804bf58 d _DYNAMIC
+0804c0a0 D _edata
+0804c0a0 D _end
+08049182 T getcmd
+         U gets@@GLIBC_2.0
+080492e2 T gettoken
+0804c000 d _GLOBAL_OFFSET_TABLE_
+0804955c T help
+         U __isoc99_sscanf@@GLIBC_2.7
+08049080 T main
+080493a2 T mem_display
+080494d0 T mem_set
+         U printf@@GLIBC_2.0
+         U putchar@@GLIBC_2.0
+         U puts@@GLIBC_2.0
+0804c09c D pxyz
+08049209 T slex
+         U __stack_chk_fail@@GLIBC_2.4
+080496f0 T __stack_chk_fail_local
+080496d4 T _start
+0804938a T stop
+         U strcmp@@GLIBC_2.0
+08049386 T __x86.get_pc_thunk.ax
+08049205 T __x86.get_pc_thunk.bx
+0804c040 D xyz
+bmoody25@pe15:~/cs341/mp1$ ./tutor
+     cmd    help message
+      md    Memory display: MD <addr>
+       s    Stop
+      ms    Memory set: MS <addr> <value>
+       h    Help: H <command>
+UNIX-tutor> md 804c09c
+0804c09c 40 c0 04 08 47 43 43 3a 20 28 55 62 75 6e 74 75  @...GCC: (Ubuntu
+UNIX-tutor> ms 804c09c 47
+UNIX-tutor> md 804c09c
+0804c09c 47 c0 04 08 47 43 43 3a 20 28 55 62 75 6e 74 75  G...GCC: (Ubuntu
+UNIX-tutor> h
+ md   Memory display: MD <addr>
+ s   Stop
+ ms   Memory set: MS <addr> <value>
+ h   Help: H <command>
+UNIX-tutor> h ms
+ ms   Memory set: MS <addr> <value>
+UNIX-tutor> s
+bmoody25@pe15:~/cs341/mp1$ exit
+exit
+
+Script done on 2024-02-21 23:32:11-05:00 [COMMAND_EXIT_CODE="0"]

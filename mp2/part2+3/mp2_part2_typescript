@@ -1,0 +1,160 @@
+Script started on Wed 20 Mar 2024 12:14:47 AM EDT
+tuser@tutor-vserver:~$ exit./update.shmtip -f printbin.lnx
+For command help, type ~?
+For help on args, rerun without args
+Code starts at 0x100100
+Using board # 1 
+Please type <CR> to confirm console setting: 
+Setting console dev to COM2Console: colour EGA+ 80x25
+COM1 at 0x03f8 (irq = 4) is a 16550A
+COM2 at 0x02f8 (irq = 3) is a 16550A
+
+                 Welcome to UMB Tutor for the PC
+   UMB Tutor is a 32-bit protected-mode PC debugger/downloader,
+       based on Linux, UMB Tutor for m68k, and remote gdb.
+UMB Tutor is free software and you are welcome to distribute copies
+of it under certain conditions.  There is no warranty for this program.
+The copyright and warranty provisions follow the Gnu general public
+license, available for view in gdb and elsewhere.  Full sources available.
+--bugs, suggestions, questions to eoneil@cs.umb.edu
+
+Exception 3 at EIP=00057a9b: Breakpoint
+Tutor> ~downloading printbin.lnx
+
+........Done.
+
+Download done, setting EIP to 100100.
+Tutor> b 100195
+Tutor> go 100100
+enter the character's ascii value in hex: 
+62
+Exception 3 at EIP=00100195: Breakpoint
+Tutor> t
+Exception 1 at EIP=00101caa: Debugger interrupt
+Tutor> t
+Exception 1 at EIP=00101cab: Debugger interrupt
+Tutor> rd
+EAX=00000062 EBX=00101c8c   EBP=003fffc8
+EDX=00101763 ECX=0006967c   ESP=003fff98
+ESI=00013e10 EDI=00101e48   EIP=00101cab
+EFLAGS=0312 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t
+Exception 1 at EIP=00101cad: Debugger interrupt
+Tutor> rd
+EAX=00000062 EBX=00101c8c   EBP=003fff98
+EDX=00101763 ECX=0006967c   ESP=003fff98
+ESI=00013e10 EDI=00101e48   EIP=00101cad
+EFLAGS=0312 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t
+Exception 1 at EIP=00101cb0: Debugger interrupt
+Tutor> t
+Exception 1 at EIP=00101cb3: Debugger interrupt
+Tutor> rd
+EAX=00000062 EBX=00101c8c   EBP=003fff98
+EDX=00101763 ECX=0006967c   ESP=003fff90
+ESI=00013e10 EDI=00101e48   EIP=00101cb3
+EFLAGS=0306 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t
+Exception 1 at EIP=00101cb6: Debugger interrupt
+Tutor> rd
+EAX=00000062 EBX=00101c8c   EBP=003fff98
+EDX=00101763 ECX=0006967c   ESP=003fff90
+ESI=00013e10 EDI=00101e48   EIP=00101cb6
+EFLAGS=0306 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t
+Exception 1 at EIP=00101cbd: Debugger interrupt
+Tutor> rd
+EAX=00000062 EBX=00101c8c   EBP=003fff98
+EDX=00101763 ECX=0006967c   ESP=003fff90
+ESI=00013e10 EDI=00101e48   EIP=00101cbd
+EFLAGS=0306 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t
+Exception 1 at EIP=00101cc0: Debugger interrupt
+Tutor> rd
+EAX=00000062 EBX=00101c8c   EBP=003fff98
+EDX=00101763 ECX=0006967c   ESP=003fff90
+ESI=00013e10 EDI=00101e48   EIP=00101cc0
+EFLAGS=0306 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t
+Exception 1 at EIP=00101cc4: Debugger interrupt
+Tutor> rd
+EAX=00000062 EBX=00101c8c   EBP=003fff98
+EDX=00101763 ECX=0006967c   ESP=003fff90
+ESI=00013e10 EDI=00101e48   EIP=00101cc4
+EFLAGS=0316 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t
+Exception 1 at EIP=00101cc9: Debugger interrupt
+Tutor> rd
+EAX=00000062 EBX=00101c8c   EBP=003fff98
+EDX=00101ca0 ECX=0006967c   ESP=003fff90
+ESI=00013e10 EDI=00101e48   EIP=00101cc9
+EFLAGS=0316 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t
+Exception 1 at EIP=00101cec: Debugger interrupt
+Tutor> t
+Exception 1 at EIP=00101ced: Debugger interrupt
+Tutor> rd
+EAX=00000062 EBX=00101c8c   EBP=003fff98
+EDX=00101ca0 ECX=0006967c   ESP=003fff88
+ESI=00013e10 EDI=00101e48   EIP=00101ced
+EFLAGS=0316 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t rd
+EAX=00000062 EBX=00101c8c   EBP=003fff98
+EDX=00101ca0 ECX=0006967c   ESP=003fff88
+ESI=00013e10 EDI=00101e48   EIP=00101ced
+EFLAGS=0316 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t
+Exception 1 at EIP=00101cef: Debugger interrupt
+Tutor> rd
+EAX=00000062 EBX=00101c8c   EBP=003fff88
+EDX=00101ca0 ECX=0006967c   ESP=003fff88
+ESI=00013e10 EDI=00101e48   EIP=00101cef
+EFLAGS=0316 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t
+Exception 1 at EIP=00101cf2: Debugger interrupt
+Tutor> rd
+EAX=00000062 EBX=00101c8c   EBP=003fff88
+EDX=00101ca0 ECX=0006967c   ESP=003fff78
+ESI=00013e10 EDI=00101e48   EIP=00101cf2
+EFLAGS=0306 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> rd  t
+Exception 1 at EIP=00101cf5: Debugger interrupt
+Tutor> t
+Exception 1 at EIP=00101cf8: Debugger interrupt
+Tutor> t
+Exception 1 at EIP=00101cff: Debugger interrupt
+Tutor> rd
+EAX=00000006 EBX=00101c8c   EBP=003fff88
+EDX=00101ca0 ECX=0006967c   ESP=003fff78
+ESI=00013e10 EDI=00101e48   EIP=00101cff
+EFLAGS=0306 (IF=1 SF=0 ZF=0 CF=0 OF=0)
+Tutor> t
+Exception 1 at EIP=00101d06: Debugger interrupt
+Tutor> t
+Exception 1 at EIP=00101d08: Debugger interrupt
+Tutor> t
+Exception 1 at EIP=00101d0b: Debugger interrupt
+Tutor> rrd  d  b 101cef
+Tutor> go
+Exception 3 at EIP=00101cef: Breakpoint
+Tutor> go    go 100100
+enter the character's ascii value in hex: 
+blException 3 at EIP=00100195: Breakpoint
+Tutor> ake   go 100100
+enter the character's ascii value in hex: 
+62
+Exception 3 at EIP=00100195: Breakpoint
+Tutor> go
+Exception 3 at EIP=00101cef: Breakpoint
+Tutor> go
+Exception 3 at EIP=00101cef: Breakpoint
+Tutor> go
+The binary format for character b is 0110 0010
+Exception 3 at EIP=00100110: Breakpoint
+Tutor> ~q 
+Quit handler: 
+killing process 1886 Leaving board #1
+tuser@tutor-vserver:~$ exit
+exit
+
+Script done on Wed 20 Mar 2024 12:27:12 AM EDT

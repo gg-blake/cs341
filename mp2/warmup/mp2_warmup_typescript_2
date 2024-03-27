@@ -1,0 +1,39 @@
+Script started on 2024-03-16 19:46:46-04:00 [TERM="xterm-256color" TTY="/dev/pts/16" COLUMNS="87" LINES="40"]
+bmoody25@pe15:~$ cd mp2/warmup
+bash: cd: mp2/warmup: No such file or directory
+bmoody25@pe15:~$ cd cs341
+bmoody25@pe15:~/cs341$ cd mp2/warmup
+bmoody25@pe15:~/cs341/mp2/warmup$ ls
+tiny.lnx  tiny.o  tiny.s
+bmoody25@pe15:~/cs341/mp2/warmup$ as --32 -al -o tiny.o tiny.s
+GAS LISTING tiny.s 			page 1
+
+
+   1              	# tiny.s: mp2warmup program
+   2              	
+   3              	        .globl _start
+   4              	_start:
+   5 0000 B8080000 		movl $8, %eax
+   5      00
+   6 0005 83C003   		addl $0x3, %eax
+   7 0008 A3000200 		movl %eax, 0x200
+   7      00
+   8 000d CC       		int $3
+   9              	   	.end
+bmoody25@pe15:~/cs341/mp2/warmup$ ld -m elf_i386 -N -Ttext 0x100100 -o tiny.lnx tiny.o
+bmoody25@pe15:~/cs341/mp2/warmup$ objdump -S tiny.lnx
+
+tiny.lnx:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00100100 <_start>:
+  100100:	b8 08 00 00 00       	mov    $0x8,%eax
+  100105:	83 c0 03             	add    $0x3,%eax
+  100108:	a3 00 02 00 00       	mov    %eax,0x200
+  10010d:	cc                   	int3   
+bmoody25@pe15:~/cs341/mp2/warmup$ exit
+exit
+
+Script done on 2024-03-16 19:50:27-04:00 [COMMAND_EXIT_CODE="0"]
